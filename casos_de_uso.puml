@@ -1,0 +1,118 @@
+@startuml ReparaTech_CasosDeUso
+
+' 1. Dirección del flujo
+left to right direction
+
+' 2. Enrutamiento Ortogonal (El secreto de los ángulos rectos)
+skinparam linetype ortho
+skinparam nodesep 50
+skinparam ranksep 100
+skinparam packageStyle rectangle
+
+' Estilos visuales base
+skinparam usecase {
+    BorderColor #2A4747
+    ArrowColor #2A4747
+}
+skinparam actor {
+    BackgroundColor #61D095
+    BorderColor #2A4747
+}
+skinparam package {
+    BackgroundColor #F2F0EC
+    BorderColor #2A4747
+}
+
+' Leyenda de colores incrustada
+note "Leyenda:\n<color:#2A4747><back:#D5F5E3> Verde Pastel </back></color> : Implementado\n<color:#2A4747><back:#FADBD8> Rojo Pastel </back></color> : Planeado/Pendiente" as Leyenda
+
+' Definición de Actores
+actor "Cliente" as C
+actor "Técnico" as T
+actor "Administrador" as A #D5F5E3
+
+' Estructura de Paquetes
+package "Autenticación y Perfil" as P1 {
+    usecase "Registrarse" as UC1 #D5F5E3
+    usecase "Iniciar Sesión" as UC2 #D5F5E3
+    usecase "Editar Perfil" as UC3 #D5F5E3
+    usecase "Recuperación de Contraseña" as UC4 #D5F5E3
+    usecase "Verificación de Identidad (KYC)" as UC17 #FADBD8
+    usecase "Comprar Membresía Premium" as UC18 #FADBD8
+}
+
+package "Gestión de Servicios" as P2 {
+    usecase "Buscar Servicios" as UC5 #D5F5E3
+    usecase "Mapa de Servicios" as UC6 #D5F5E3
+    usecase "Solicitar Reserva" as UC7 #D5F5E3
+    usecase "Aceptar/Rechazar Reserva" as UC8 #D5F5E3
+    usecase "Completar Servicio" as UC9 #D5F5E3
+    usecase "Cancelar Reserva" as UC10 #D5F5E3
+    usecase "Guardar Técnico Favorito" as UC19 #D5F5E3
+    usecase "Abrir Disputa/Reclamo" as UC20 #D5F5E3
+}
+
+package "Interacción y Calidad" as P3 {
+    usecase "Chat en Tiempo Real" as UC11 #D5F5E3
+    usecase "Recibir Notificaciones" as UC16 #D5F5E3
+    usecase "Dejar Reseña y Calificar" as UC12 #D5F5E3
+    usecase "Leer Reseñas de Técnico" as UC13 #D5F5E3
+}
+
+package "Administración" as P4 {
+    usecase "Gestionar Usuarios" as UC14 #D5F5E3
+    usecase "Gestionar Categorías" as UC15 #D5F5E3
+    usecase "Resolver Disputas" as UC24 #D5F5E3
+}
+
+package "Pagos y Facturación" as P5 {
+    usecase "Pagar Servicio en Línea" as UC21 #D5F5E3
+    usecase "Descargar Factura" as UC22 #D5F5E3
+    usecase "Retirar Fondos" as UC23 #D5F5E3
+}
+
+' 3. Estructura de Grilla Invisible (Para alinear paquetes)
+' Alineamos en 3 columnas virtuales
+P1 -[hidden]down-> P3
+P2 -[hidden]down-> P4
+P3 -[hidden]down-> P5
+
+' Relaciones del Cliente
+C --> UC1
+C --> UC2
+C --> UC3
+C --> UC4
+C --> UC5
+C --> UC6
+C --> UC7
+C --> UC10
+C --> UC11
+C --> UC16
+C --> UC12
+C --> UC13
+C --> UC19
+C --> UC20
+C --> UC21
+C --> UC22
+
+' Relaciones del Técnico
+T --> UC1
+T --> UC2
+T --> UC3
+T --> UC4
+T --> UC8
+T --> UC9
+T --> UC11
+T --> UC16
+T --> UC17
+T --> UC18
+T --> UC20
+T --> UC23
+
+' Relaciones del Administrador
+A --> UC2
+A --> UC14
+A --> UC15
+A --> UC24
+
+@enduml
