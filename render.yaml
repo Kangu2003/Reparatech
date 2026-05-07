@@ -1,0 +1,37 @@
+# ============================================================
+# ReparaTech — render.yaml (Infrastructure as Code)
+# Documentación: https://render.com/docs/render-yaml-spec
+# ============================================================
+
+services:
+  - type: web
+    name: reparatech
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: free           # Cambia a "starter" o "standard" si necesitas más recursos
+
+    # Variables de entorno (configura los valores reales en el Dashboard de Render)
+    envVars:
+      - key: DB_HOST
+        sync: false       # Se ingresa manualmente en el Dashboard
+      - key: DB_USER
+        sync: false
+      - key: DB_PASSWORD
+        sync: false
+      - key: DB_NAME
+        sync: false
+      - key: DB_PORT
+        value: "3306"
+      - key: APP_ENV
+        value: production
+      - key: BASE_URL
+        sync: false       # Ej: https://reparatech.onrender.com
+
+    # Disco persistente para uploads (opcional, solo en planes pagos)
+    # disk:
+    #   name: uploads-disk
+    #   mountPath: /var/www/html/uploads
+    #   sizeGB: 1
+
+    healthCheckPath: /
+    autoDeploy: true      # Re-despliega automáticamente al hacer push a main

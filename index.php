@@ -2,8 +2,8 @@
 // index.php - RAÍZ DEL PROYECTO
 session_start();
 
-// ✅ BASE_URL centralizado
-define('BASE_URL', '/inicio_sesion_mvc');
+// ✅ BASE_URL centralizado — vacío en producción (Render), subfolder en local (XAMPP)
+define('BASE_URL', getenv('BASE_URL') ?: '/inicio_sesion_mvc');
 
 // ✅ Nuevo controlador con soporte de roles
 require_once __DIR__ . '/controlador/ControladorUsuario.php';

@@ -1,0 +1,8 @@
+Options -Indexes
+DirectoryIndex index.php
+
+# Redirigir todo a index.php (si usas rutas limpias en el futuro)
+# RewriteEngine On
+# RewriteCond %{REQUEST_FILENAME} !-f
+# RewriteCond %{REQUEST_FILENAME} !-d
+# RewriteRule ^(.*)$ index.php?$1 [L,QSA]

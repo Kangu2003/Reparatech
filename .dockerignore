@@ -1,0 +1,21 @@
+# Git
+.git
+.gitignore
+
+# Archivos de desarrollo / IDE
+.vscode
+.idea
+*.log
+
+# Archivos de Render/Docker (no necesarios dentro del contenedor)
+Dockerfile
+render.yaml
+.dockerignore
+
+# Documentación y diagramas (no necesarios en producción)
+*.puml
+README.md
+
+# Archivos de XAMPP temporales
+thumbs.db
+.DS_Store
