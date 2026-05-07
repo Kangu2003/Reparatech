@@ -63,6 +63,11 @@ package "Administración" as P4 {
     usecase "Gestionar Usuarios" as UC14 #D5F5E3
     usecase "Gestionar Categorías" as UC15 #D5F5E3
     usecase "Resolver Disputas" as UC24 #D5F5E3
+    usecase "Ver Dashboard Financiero" as UC25 #D5F5E3
+    usecase "Aprobar Retiros de Técnicos" as UC26 #D5F5E3
+    usecase "Verificar Identidad (KYC)" as UC27 #D5F5E3
+    usecase "Gestionar Membresías Premium" as UC28 #D5F5E3
+    usecase "Enviar Notificaciones" as UC29 #D5F5E3
 }
 
 package "Pagos y Facturación" as P5 {
@@ -111,8 +116,15 @@ T --> UC23
 
 ' Relaciones del Administrador
 A --> UC2
+A --> UC3
 A --> UC14
 A --> UC15
+A --> UC16
 A --> UC24
+A --> UC25
+A --> UC26
+A --> UC27
+A --> UC28
+A --> UC29
 
 @enduml
