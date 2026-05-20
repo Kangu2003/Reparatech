@@ -40,6 +40,42 @@ if ($accion === 'fix_db') {
     echo "<p>Las rutas de las fotos de perfil han sido corregidas para Render.</p>";
     exit();
 }
+// ✅ Inicio de sesión con Google (Redirección)
+if ($accion === 'login_google') {
+    $config = require __DIR__ . '/config/config.php';
+    $clientId = $config['google_client_id'] ?? '';
+    
+    // Calcular URI de redirección dinámicamente para que funcione tanto en Local como en Render
+    $protocol = (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') || (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? 'https' : 'http';
+    $redirectUri = $protocol . '://' . $_SERVER['HTTP_HOST'] . BASE_URL . '/index.php?accion=google_callback';
+    
+    // El rol puede pasarse si vienen del registro. Si no, asume 'usuario'
+    $estado = isset($_GET['rol']) ? $_GET['rol'] : 'usuario';
+    
+    $googleOauthUrl = "https://accounts.google.com/o/oauth2/v2/auth?" . http_build_query([
+        'client_id' => $clientId,
+        'redirect_uri' => $redirectUri,
+        'response_type' => 'code',
+        'scope' => 'email profile',
+        'access_type' => 'online',
+        'state' => $estado
+    ]);
+    header('Location: ' . $googleOauthUrl);
+    exit();
+}
+
+// ✅ Callback de Google
+if ($accion === 'google_callback') {
+    if (isset($_GET['code'])) {
+        $controlador = new ControladorUsuario();
+        // Pasamos el state que trae el rol deseado
+        $rol = $_GET['state'] ?? 'usuario';
+        $controlador->loginConGoogle($_GET['code'], $rol);
+    } else {
+        header('Location: ' . BASE_URL . '/vista/login.php?error=' . urlencode('Error en la autenticación de Google.'));
+    }
+    exit();
+}
 
 // ✅ Registro — ahora recibe el rol elegido en el formulario
 if ($accion === 'registro' && $_SERVER['REQUEST_METHOD'] === 'POST') {

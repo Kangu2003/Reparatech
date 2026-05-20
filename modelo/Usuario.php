@@ -240,4 +240,42 @@ class Usuario {
         $stmt->close();
         return $favoritos;
     }
+
+    // ─── Login con Google ────────────────────────────────────
+    public function registrarDesdeGoogle(string $nombre, string $correo, string $foto, string $rolEsperado): void {
+        // Verificar si ya existe
+        $stmt = $this->conexion->prepare("SELECT id FROM usuarios WHERE correo_electronico = ?");
+        $stmt->bind_param("s", $correo);
+        $stmt->execute();
+        $stmt->store_result();
+        $existe = $stmt->num_rows > 0;
+        $stmt->close();
+
+        if (!$existe) {
+            // Generar contraseña aleatoria inquebrantable ya que Google maneja la autenticación
+            $pass_aleatoria = bin2hex(random_bytes(16));
+            $hash = password_hash($pass_aleatoria, PASSWORD_DEFAULT);
+            $rol = in_array($rolEsperado, ['usuario', 'tecnico']) ? $rolEsperado : 'usuario';
+
+            $stmt = $this->conexion->prepare(
+                "INSERT INTO usuarios (nombre_usuario, correo_electronico, contrasena, rol, foto)
+                 VALUES (?, ?, ?, ?, ?)"
+            );
+            if ($stmt) {
+                $stmt->bind_param("sssss", $nombre, $correo, $hash, $rol, $foto);
+                $stmt->execute();
+                $stmt->close();
+            }
+        }
+    }
+
+    public function obtenerDatosCompletosPorCorreo(string $correo): array|false {
+        $stmt = $this->conexion->prepare("SELECT * FROM usuarios WHERE correo_electronico = ?");
+        if (!$stmt) return false;
+        $stmt->bind_param("s", $correo);
+        $stmt->execute();
+        $resultado = $stmt->get_result()->fetch_assoc();
+        $stmt->close();
+        return $resultado ?: false;
+    }
 }
