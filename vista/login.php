@@ -4,55 +4,367 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login — ReparaTech</title>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
-    :root { --green-light: #61D095; --green-mid: #48BF84; --green-dark: #2A4747; --white: #FAFAF8; --off-white: #F2F0EC; --text: #1a2a2a; }
-    body { margin: 0; font-family: 'DM Sans', sans-serif; background-color: var(--off-white); display: flex; justify-content: center; align-items: center; min-height: 100vh; }
-    .bg-pattern { position: absolute; inset: 0; background-image: radial-gradient(var(--green-mid) 1px, transparent 1px); background-size: 40px 40px; opacity: 0.1; }
-    .login-container { background: var(--white); width: 100%; max-width: 400px; padding: 3rem; border-radius: 32px; box-shadow: 0 40px 100px rgba(42, 71, 71, 0.1); position: relative; z-index: 1; text-align: center; }
-    .logo { font-family: 'Syne', sans-serif; font-size: 1.8rem; font-weight: 800; color: var(--green-dark); text-decoration: none; display: block; margin-bottom: 2rem; }
-    .logo span { color: var(--green-light); }
-    .form-group { text-align: left; margin-bottom: 1.2rem; }
-    label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.4rem; font-family: 'Syne', sans-serif; }
-    input { width: 100%; border: 1.5px solid rgba(72,191,132,0.2); border-radius: 14px; padding: 0.9rem; box-sizing: border-box; background: var(--off-white); outline: none; }
-    .btn-login { width: 100%; background: var(--green-light); color: var(--green-dark); font-family: 'Syne', sans-serif; font-weight: 700; padding: 1rem; border-radius: 100px; border: none; cursor: pointer; margin-top: 1rem; }
-    .error { color: #dc2626; font-size: 0.85rem; margin-bottom: 1rem; }
+    :root {
+      --green-light: #61D095;
+      --green-mid: #48BF84;
+      --green-sea: #439775;
+      --green-dark: #2A4747;
+      --white: #FAFAF8;
+      --off-white: #F2F0EC;
+      --text: #1a2a2a;
+      --text-muted: #4a6a6a;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background-color: var(--white);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+    }
+
+    /* SPLIT LAYOUT */
+    .split-layout {
+      display: flex;
+      width: 100%;
+      min-height: 100vh;
+    }
+
+    /* LEFT PANEL (IMAGE) */
+    .left-panel {
+      flex: 1;
+      background: linear-gradient(135deg, var(--green-dark) 0%, #172a2a 100%);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 3rem;
+      overflow: hidden;
+    }
+
+    /* Background image with overlay */
+    .left-panel::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url('../img/login-hero.png');
+      background-size: cover;
+      background-position: center;
+      opacity: 0.6; /* Slight transparency to let the gradient show */
+      mix-blend-mode: screen; /* Integrates the image with the dark green background beautifully */
+    }
+
+    /* Add a subtle pattern over the image for texture */
+    .left-panel::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(var(--green-light) 1px, transparent 1px);
+      background-size: 30px 30px;
+      opacity: 0.05;
+    }
+
+    .brand-glass {
+      position: relative;
+      z-index: 10;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 2.2rem;
+      border-radius: 24px;
+      max-width: 480px;
+      animation: fadeRight 0.8s ease forwards;
+    }
+
+    .brand-glass h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: var(--white);
+      margin-bottom: 0.5rem;
+      line-height: 1.1;
+    }
+
+    .brand-glass h1 span {
+      color: var(--green-light);
+    }
+
+    .brand-glass p {
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+
+    /* RIGHT PANEL (FORM) */
+    .right-panel {
+      flex: 1;
+      max-width: 600px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem;
+      background: var(--white);
+      position: relative;
+    }
+
+    .form-container {
+      width: 100%;
+      max-width: 380px;
+      animation: fadeUp 0.6s ease forwards;
+    }
+
+    /* Mobile Logo (hidden on desktop) */
+    .mobile-logo {
+      display: none;
+      font-family: 'Syne', sans-serif;
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--green-dark);
+      text-decoration: none;
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+    .mobile-logo span { color: var(--green-light); }
+
+    .form-header {
+      margin-bottom: 2rem;
+    }
+
+    .form-header h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--green-dark);
+      margin-bottom: 0.4rem;
+    }
+
+    .form-header p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+
+    label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      font-family: 'Syne', sans-serif;
+      color: var(--green-dark);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    input {
+      width: 100%;
+      border: 1.5px solid rgba(72,191,132,0.25);
+      border-radius: 16px;
+      padding: 1rem 1.2rem;
+      font-size: 0.95rem;
+      font-family: 'DM Sans', sans-serif;
+      background: var(--off-white);
+      color: var(--text);
+      outline: none;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    input:focus {
+      border-color: var(--green-mid);
+      background: var(--white);
+      box-shadow: 0 0 0 4px rgba(97,208,149,0.15);
+      transform: translateY(-2px);
+    }
+
+    input::placeholder {
+      color: #9ca3af;
+    }
+
+    .btn-login {
+      width: 100%;
+      background: linear-gradient(135deg, var(--green-light), var(--green-mid));
+      color: var(--green-dark);
+      font-family: 'Syne', sans-serif;
+      font-size: 1rem;
+      font-weight: 800;
+      padding: 1.1rem;
+      border-radius: 100px;
+      border: none;
+      cursor: pointer;
+      margin-top: 1rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 10px 20px rgba(97,208,149,0.2);
+    }
+
+    .btn-login:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 25px rgba(97,208,149,0.3);
+      background: linear-gradient(135deg, var(--green-mid), var(--green-sea));
+      color: var(--white);
+    }
+
+    .btn-login:active {
+      transform: translateY(0);
+    }
+
+    .alert {
+      padding: 1rem;
+      border-radius: 12px;
+      font-size: 0.85rem;
+      margin-bottom: 1.5rem;
+      font-weight: 500;
+    }
+
+    .alert-error {
+      background: #fef2f2;
+      color: #dc2626;
+      border: 1px solid #fecaca;
+    }
+
+    .alert-success {
+      background: rgba(97,208,149,0.12);
+      color: var(--green-sea);
+      border: 1px solid rgba(97,208,149,0.25);
+    }
+
+    .form-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 2rem;
+      font-size: 0.85rem;
+    }
+
+    .form-footer a {
+      color: var(--green-sea);
+      text-decoration: none;
+      font-weight: 700;
+      transition: color 0.2s;
+    }
+
+    .form-footer a:hover {
+      color: var(--green-dark);
+    }
+
+    .forgot-link {
+      display: block;
+      text-align: right;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      margin-top: 0.5rem;
+      font-weight: 500;
+    }
+    
+    .forgot-link:hover {
+      color: var(--green-sea);
+      text-decoration: underline;
+    }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeRight {
+      from { opacity: 0; transform: translateX(-20px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    /* RESPONSIVE DESIGN */
+    @media (max-width: 900px) {
+      .split-layout {
+        flex-direction: column;
+      }
+      .left-panel {
+        display: none; /* Hide image on mobile for cleaner look */
+      }
+      .right-panel {
+        max-width: 100%;
+        padding: 3rem 2rem;
+      }
+      .mobile-logo {
+        display: block;
+      }
+    }
   </style>
 </head>
 <body>
-  <div class="bg-pattern"></div>
-  <div class="login-container">
-    <a href="#" class="logo">Repara<span>Tech</span></a>
-
-    <!-- ✅ $error sanitizado con htmlspecialchars() -->
-    <?php if (isset($error)): ?>
-      <p class="error"><?php echo htmlspecialchars($error); ?></p>
-    <?php endif; ?>
-    <?php if (isset($_GET['recuperacion']) && $_GET['recuperacion'] === 'exito'): ?>
-      <p style="color: #439775; font-size: 0.85rem; margin-bottom: 1rem; background: rgba(97,208,149,0.12); padding: 0.8rem; border-radius: 12px; border: 1px solid rgba(97,208,149,0.25);">
-        ✅ Contraseña actualizada con éxito. Ya puedes iniciar sesión.
-      </p>
-    <?php endif; ?>
-
-    <form action="../index.php?accion=login" method="POST">
-      <div class="form-group">
-        <label>Correo Electrónico</label>
-        <input type="email" name="correo_electronico" required>
+  
+  <div class="split-layout">
+    
+    <!-- LEFT PANEL: Image & Branding -->
+    <div class="left-panel">
+      <!-- Decorative top-left element if needed -->
+      <div></div> 
+      
+      <div class="brand-glass">
+        <h1>Repara<span>Tech</span></h1>
+        <p>Conectando expertos con hogares inteligentes. Inicia sesión para gestionar tus servicios y clientes en un solo lugar.</p>
       </div>
-      <div class="form-group">
-        <label>Contraseña</label>
-        <input type="password" name="contrasena" required>
-      </div>
-      <button type="submit" class="btn-login">Entrar</button>
-    </form>
-
-    <div style="margin-top: 1rem; font-size: 0.8rem;">
-      <a href="recuperar_password.php" style="color: var(--text-muted); text-decoration: none;">¿Olvidaste tu contraseña?</a>
     </div>
 
-    <p style="font-size: 0.8rem; margin-top: 1rem;">
-      ¿No tienes cuenta? <a href="registro.php" style="color: var(--green-dark); font-weight: bold;">Regístrate</a>
-    </p>
+    <!-- RIGHT PANEL: Login Form -->
+    <div class="right-panel">
+      <div class="form-container">
+        
+        <a href="../index.php" class="mobile-logo">Repara<span>Tech</span></a>
+
+        <div class="form-header">
+          <h2>¡Bienvenido de nuevo!</h2>
+          <p>Ingresa tus credenciales para continuar.</p>
+        </div>
+
+        <?php if (isset($error)): ?>
+          <div class="alert alert-error">
+            ⚠️ <?php echo htmlspecialchars($error); ?>
+          </div>
+        <?php endif; ?>
+
+        <?php if (isset($_GET['recuperacion']) && $_GET['recuperacion'] === 'exito'): ?>
+          <div class="alert alert-success">
+            ✅ Contraseña actualizada con éxito. Ya puedes iniciar sesión.
+          </div>
+        <?php endif; ?>
+
+        <form action="../index.php?accion=login" method="POST">
+          <div class="form-group">
+            <label>Correo Electrónico</label>
+            <input type="email" name="correo_electronico" placeholder="ejemplo@correo.com" required>
+          </div>
+          
+          <div class="form-group">
+            <label>Contraseña</label>
+            <input type="password" name="contrasena" placeholder="••••••••" required>
+            <a href="recuperar_password.php" class="forgot-link">¿Olvidaste tu contraseña?</a>
+          </div>
+          
+          <button type="submit" class="btn-login">Iniciar Sesión</button>
+        </form>
+
+        <div class="form-footer">
+          <span style="color: var(--text-muted);">¿No tienes cuenta?</span>
+          <a href="registro.php">Regístrate gratis</a>
+        </div>
+
+      </div>
+    </div>
+
   </div>
+
 </body>
 </html>
