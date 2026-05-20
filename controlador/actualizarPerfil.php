@@ -106,9 +106,24 @@ if (!empty($_FILES['foto']['name'])) {
         redirigirError('No se pudo guardar la imagen. Verifica los permisos.');
     }
 
-    // Si el BASE_URL está definido, úsalo, si no, define uno dinámicamente o usa relativo.
-    $baseUrl = defined('BASE_URL') ? BASE_URL : (getenv('BASE_URL') !== false ? getenv('BASE_URL') : '/inicio_sesion_mvc');
-    $rutaFoto = $baseUrl . '/uploads/fotos/' . $nombreArchivo;
+    // Definir BASE_URL correctamente
+    if (!defined('BASE_URL')) {
+        if (getenv('RENDER') !== false) {
+            define('BASE_URL', '');
+        } else {
+            $envBase = getenv('BASE_URL');
+            if ($envBase !== false && $envBase !== '') {
+                define('BASE_URL', $envBase);
+            } else {
+                $docRoot = rtrim(str_replace('\\', '/', $_SERVER['DOCUMENT_ROOT']), '/');
+                $dir = str_replace('\\', '/', dirname(__DIR__));
+                $baseUrl = str_ireplace($docRoot, '', $dir);
+                define('BASE_URL', $baseUrl);
+            }
+        }
+    }
+    
+    $rutaFoto = BASE_URL . '/uploads/fotos/' . $nombreArchivo;
 }
 
 // ─── Cambio de contraseña (opcional) ──────────────────────
