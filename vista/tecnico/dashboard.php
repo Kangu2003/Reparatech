@@ -722,10 +722,19 @@ $saldoDisponible = $totalGanado - $totalRetirado;
 
 <script>
   function showTab(name) {
+    if (typeof event !== 'undefined' && event && event.type === 'click') {
+        event.preventDefault();
+    }
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
     document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-    document.getElementById('tab-' + name).classList.add('active');
-    event.target.closest('.tab').classList.add('active');
+    const section = document.getElementById('tab-' + name);
+    if (section) section.classList.add('active');
+    
+    const activeTab = document.querySelector(`.tab[onclick*="showTab('${name}')"]`) || 
+                      document.querySelector(`.tab[onclick*='showTab("${name}")']`);
+    if (activeTab) {
+        activeTab.classList.add('active');
+    }
     return false;
   }
 
