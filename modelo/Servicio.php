@@ -62,6 +62,17 @@ class Servicio {
         $stmt->execute();
         $resultado = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
         $stmt->close();
+        
+        if ($resultado) {
+            $baseUrl = defined('BASE_URL') ? BASE_URL : '';
+            foreach ($resultado as &$row) {
+                if (!empty($row['tecnico_foto'])) {
+                    $foto = ltrim(str_replace('/inicio_sesion_mvc/', '', $row['tecnico_foto']), '/');
+                    $row['tecnico_foto'] = rtrim($baseUrl, '/') . '/' . $foto;
+                }
+            }
+        }
+        
         return $resultado;
     }
 
@@ -93,6 +104,13 @@ class Servicio {
         $stmt->execute();
         $resultado = $stmt->get_result()->fetch_assoc();
         $stmt->close();
+        
+        if ($resultado && !empty($resultado['tecnico_foto'])) {
+            $baseUrl = defined('BASE_URL') ? BASE_URL : '';
+            $foto = ltrim(str_replace('/inicio_sesion_mvc/', '', $resultado['tecnico_foto']), '/');
+            $resultado['tecnico_foto'] = rtrim($baseUrl, '/') . '/' . $foto;
+        }
+        
         return $resultado ?: false;
     }
 
