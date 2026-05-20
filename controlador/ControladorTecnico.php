@@ -13,7 +13,7 @@ if (!defined('BASE_URL')) {
     } else {
         $docRoot = rtrim(str_replace('\\', '/', $_SERVER['DOCUMENT_ROOT']), '/');
         $dir = str_replace('\\', '/', dirname(__DIR__));
-        $baseUrl = str_replace($docRoot, '', $dir);
+        $baseUrl = str_ireplace($docRoot, '', $dir);
         define('BASE_URL', $baseUrl);
     }
 }
