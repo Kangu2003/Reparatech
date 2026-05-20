@@ -108,7 +108,15 @@ CREATE TABLE resenas (
     usuario_id INT  NOT NULL,
     tecnico_id INT  NOT NULL,
     calificacion TINYINT NOT NULL CHECK (calificacion BETWEEN 1 AND 5),
+    calificacion_puntualidad   TINYINT DEFAULT NULL COMMENT '1-5: puntualidad',
+    calificacion_comunicacion  TINYINT DEFAULT NULL COMMENT '1-5: comunicación',
+    calificacion_calidad       TINYINT DEFAULT NULL COMMENT '1-5: calidad del trabajo',
+    calificacion_precio        TINYINT DEFAULT NULL COMMENT '1-5: relación precio-valor',
+    aspectos                   VARCHAR(500) DEFAULT '' COMMENT 'Etiquetas positivas separadas por coma',
     comentario TEXT,
+    respuesta_tecnico          TEXT DEFAULT NULL COMMENT 'Respuesta pública del técnico',
+    fecha_respuesta            TIMESTAMP NULL DEFAULT NULL,
+    util_count                 INT DEFAULT 0 COMMENT 'Cuántos usuarios marcaron como útil',
     creado_en  TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (reserva_id) REFERENCES reservas(id) ON DELETE CASCADE,
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE,
@@ -172,4 +180,72 @@ CREATE TABLE retiros (
     creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     actualizado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (tecnico_id) REFERENCES usuarios(id) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- ============================================================
+-- TABLA: calificaciones de USUARIOS (por técnicos)
+-- ============================================================
+CREATE TABLE calificaciones_usuario (
+    id              INT AUTO_INCREMENT PRIMARY KEY,
+    reserva_id      INT NOT NULL UNIQUE,
+    tecnico_id      INT NOT NULL,
+    usuario_id      INT NOT NULL,
+    calificacion    TINYINT NOT NULL CHECK (calificacion BETWEEN 1 AND 5),
+    puntualidad     TINYINT DEFAULT NULL,
+    comunicacion    TINYINT DEFAULT NULL,
+    respeto         TINYINT DEFAULT NULL,
+    pago_puntual    TINYINT DEFAULT NULL,
+    comentario      TEXT,
+    creado_en       TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (reserva_id)  REFERENCES reservas(id)  ON DELETE CASCADE,
+    FOREIGN KEY (tecnico_id)  REFERENCES usuarios(id)  ON DELETE CASCADE,
+    FOREIGN KEY (usuario_id)  REFERENCES usuarios(id)  ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- ============================================================
+-- TABLA: PORTAFOLIO del técnico
+-- ============================================================
+CREATE TABLE portafolio (
+    id              INT AUTO_INCREMENT PRIMARY KEY,
+    tecnico_id      INT NOT NULL,
+    titulo          VARCHAR(150) NOT NULL,
+    descripcion     TEXT,
+    categoria_id    INT DEFAULT NULL,
+    imagen_url      VARCHAR(500) DEFAULT '',
+    imagen_2_url    VARCHAR(500) DEFAULT '',
+    imagen_3_url    VARCHAR(500) DEFAULT '',
+    precio_cobrado  DECIMAL(10,2) DEFAULT NULL,
+    duracion_horas  DECIMAL(5,1) DEFAULT NULL,
+    fecha_trabajo   DATE DEFAULT NULL,
+    destacado       TINYINT(1) DEFAULT 0,
+    likes           INT DEFAULT 0,
+    vistas          INT DEFAULT 0,
+    creado_en       TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (tecnico_id)   REFERENCES usuarios(id) ON DELETE CASCADE,
+    FOREIGN KEY (categoria_id) REFERENCES categorias(id) ON DELETE SET NULL
+) ENGINE=InnoDB;
+
+-- ============================================================
+-- TABLA: Likes del portafolio
+-- ============================================================
+CREATE TABLE portafolio_likes (
+    id              INT AUTO_INCREMENT PRIMARY KEY,
+    portafolio_id   INT NOT NULL,
+    usuario_id      INT NOT NULL,
+    creado_en       TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE KEY (portafolio_id, usuario_id),
+    FOREIGN KEY (portafolio_id) REFERENCES portafolio(id) ON DELETE CASCADE,
+    FOREIGN KEY (usuario_id)    REFERENCES usuarios(id)   ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- ============================================================
+-- TABLA: Historial del chatbot (para contexto)
+-- ============================================================
+CREATE TABLE chatbot_historial (
+    id              INT AUTO_INCREMENT PRIMARY KEY,
+    usuario_id      INT NOT NULL,
+    rol             ENUM('user','assistant') NOT NULL,
+    mensaje         TEXT NOT NULL,
+    creado_en       TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;

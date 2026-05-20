@@ -2,8 +2,18 @@
 // index.php - RAÍZ DEL PROYECTO
 session_start();
 
-// ✅ BASE_URL centralizado — vacío en producción (Render), subfolder en local (XAMPP)
-define('BASE_URL', getenv('BASE_URL') ?: '/inicio_sesion_mvc');
+// ✅ BASE_URL centralizado dinámico
+if (!defined('BASE_URL')) {
+    $envBase = getenv('BASE_URL');
+    if ($envBase !== false && $envBase !== '') {
+        define('BASE_URL', $envBase);
+    } else {
+        $docRoot = rtrim(str_replace('\\', '/', $_SERVER['DOCUMENT_ROOT']), '/');
+        $dir = str_replace('\\', '/', __DIR__);
+        $baseUrl = str_replace($docRoot, '', $dir);
+        define('BASE_URL', $baseUrl);
+    }
+}
 
 // ✅ Nuevo controlador con soporte de roles
 require_once __DIR__ . '/controlador/ControladorUsuario.php';

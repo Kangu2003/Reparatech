@@ -106,7 +106,9 @@ if (!empty($_FILES['foto']['name'])) {
         redirigirError('No se pudo guardar la imagen. Verifica los permisos.');
     }
 
-    $rutaFoto = '/inicio_sesion_mvc/uploads/fotos/' . $nombreArchivo;
+    // Si el BASE_URL está definido, úsalo, si no, define uno dinámicamente o usa relativo.
+    $baseUrl = defined('BASE_URL') ? BASE_URL : (getenv('BASE_URL') !== false ? getenv('BASE_URL') : '/inicio_sesion_mvc');
+    $rutaFoto = $baseUrl . '/uploads/fotos/' . $nombreArchivo;
 }
 
 // ─── Cambio de contraseña (opcional) ──────────────────────
