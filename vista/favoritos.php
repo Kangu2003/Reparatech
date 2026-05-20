@@ -6,6 +6,22 @@ if (!isset($_SESSION['usuario']) || $_SESSION['rol'] !== 'usuario') {
     exit();
 }
 
+if (!defined('BASE_URL')) {
+    if (getenv('RENDER') !== false) {
+        define('BASE_URL', '');
+    } else {
+        $envBase = getenv('BASE_URL');
+        if ($envBase !== false && $envBase !== '') {
+            define('BASE_URL', $envBase);
+        } else {
+            $docRoot = rtrim(str_replace('\\', '/', $_SERVER['DOCUMENT_ROOT']), '/');
+            $dir = str_replace('\\', '/', dirname(__DIR__));
+            $baseUrl = str_ireplace($docRoot, '', $dir);
+            define('BASE_URL', $baseUrl);
+        }
+    }
+}
+
 require_once __DIR__ . '/../modelo/Usuario.php';
 
 $clienteId = (int)$_SESSION['id'];
