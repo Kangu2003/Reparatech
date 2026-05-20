@@ -120,7 +120,7 @@ $inicial = strtoupper(substr($nombre, 0, 1));
                 </span>
               <?php endif; ?>
               <?php if (!empty($tecnico['es_experto'])): ?>
-                <img src="/inicio_sesion_mvc/img/experto.png" style="width:18px; height:18px;" alt="Experto" title="Técnico Experto">
+                <img src="<?= BASE_URL ?>/img/experto.png" style="width:18px; height:18px;" alt="Experto" title="Técnico Experto">
               <?php endif; ?>
             </div>
             <div class="tecnico-ciudad">📍 <?= htmlspecialchars($tecnico['ciudad']) ?></div>

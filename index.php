@@ -31,6 +31,16 @@ if ($accion === 'login' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     exit();
 }
 
+// ✅ RUTA TEMPORAL PARA CORREGIR RUTAS DE IMÁGENES EN LA BD (Render)
+if ($accion === 'fix_db') {
+    require_once __DIR__ . '/modelo/Conexion.php';
+    $db = (new Conexion())->getConexion();
+    $db->query("UPDATE usuarios SET foto = REPLACE(foto, '/inicio_sesion_mvc/', '/') WHERE foto LIKE '/inicio_sesion_mvc/%'");
+    echo "<h1>Base de datos actualizada correctamente.</h1>";
+    echo "<p>Las rutas de las fotos de perfil han sido corregidas para Render.</p>";
+    exit();
+}
+
 // ✅ Registro — ahora recibe el rol elegido en el formulario
 if ($accion === 'registro' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $controlador = new ControladorUsuario();

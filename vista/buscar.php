@@ -195,7 +195,7 @@ $servicios = $modelo->buscarServicios($busqueda, $categoriaId, $ciudad);
       <span><strong>Certificado:</strong> Cuenta validada por la plataforma.</span>
     </div>
     <div style="display:flex; align-items:center; gap:0.5rem;">
-      <img src="/inicio_sesion_mvc/img/experto.png" style="width:20px; height:20px; object-fit:contain;" alt="Experto">
+      <img src="<?= BASE_URL ?>/img/experto.png" style="width:20px; height:20px; object-fit:contain;" alt="Experto">
       <span><strong>Experto:</strong> Alta tasa de éxito y excelentes reseñas.</span>
     </div>
   </div>
@@ -247,7 +247,7 @@ $servicios = $modelo->buscarServicios($busqueda, $categoriaId, $ciudad);
                 <?php endif; ?>
                 <?php if (!empty($s['es_experto'])): ?>
                   <span title="Técnico Experto" style="margin-left: 4px; display:inline-flex; width:20px; height:20px; align-items:center; justify-content:center;">
-                    <img src="/inicio_sesion_mvc/img/experto.png" style="width:100%; height:100%; object-fit:contain;" alt="Experto">
+                    <img src="<?= BASE_URL ?>/img/experto.png" style="width:100%; height:100%; object-fit:contain;" alt="Experto">
                   </span>
                 <?php endif; ?>
               </div>
