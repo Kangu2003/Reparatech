@@ -66,7 +66,7 @@ class Servicio {
         if ($resultado) {
             $baseUrl = defined('BASE_URL') ? BASE_URL : '';
             foreach ($resultado as &$row) {
-                if (!empty($row['tecnico_foto'])) {
+                if (!empty($row['tecnico_foto']) && !preg_match('#^https?://#i', $row['tecnico_foto'])) {
                     $foto = ltrim(str_replace('/inicio_sesion_mvc/', '', $row['tecnico_foto']), '/');
                     $row['tecnico_foto'] = rtrim($baseUrl, '/') . '/' . $foto;
                 }
@@ -105,7 +105,7 @@ class Servicio {
         $resultado = $stmt->get_result()->fetch_assoc();
         $stmt->close();
         
-        if ($resultado && !empty($resultado['tecnico_foto'])) {
+        if ($resultado && !empty($resultado['tecnico_foto']) && !preg_match('#^https?://#i', $resultado['tecnico_foto'])) {
             $baseUrl = defined('BASE_URL') ? BASE_URL : '';
             $foto = ltrim(str_replace('/inicio_sesion_mvc/', '', $resultado['tecnico_foto']), '/');
             $resultado['tecnico_foto'] = rtrim($baseUrl, '/') . '/' . $foto;

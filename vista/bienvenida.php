@@ -309,6 +309,7 @@ if (!empty($activas)) {
       .welcome-header { flex-direction: column; align-items: flex-start; }
     }
   </style>
+  <link rel="stylesheet" href="../css/dcu-mejoras.css">
 </head>
 <body>
 

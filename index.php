@@ -1662,6 +1662,7 @@ $fotoUsuario   = $sesionActiva ? ($_SESSION['foto'] ?? '')                      
       .services-grid { grid-template-columns: 1fr }
     }
   </style>
+  <link rel="stylesheet" href="css/dcu-mejoras.css">
 </head>
 
 <body>
@@ -1984,8 +1985,8 @@ $fotoUsuario   = $sesionActiva ? ($_SESSION['foto'] ?? '')                      
           <p>Únete a nuestra red y accede a cientos de clientes en tu ciudad. Mayor visibilidad, más ingresos y
             reputación digital verificada.</p>
           <div class="cta-btns">
-            <button class="btn-white" href="vista/registro.php?rol=tecnico">Registrarme como profesional</button>
-            <button class="btn-outline-white" href="vista/registro.php?rol=tecnico">Conocer los beneficios →</button>
+            <a class="btn-white" href="vista/registro.php?rol=tecnico">Registrarme como profesional</a>
+            <a class="btn-outline-white" href="#como-funciona">Conocer los beneficios →</a>
           </div>
         </div>
         <div class="cta-perks">
@@ -2023,7 +2024,7 @@ $fotoUsuario   = $sesionActiva ? ($_SESSION['foto'] ?? '')                      
         <div class="footer-col">
           <h4>Para usuarios</h4>
           <ul>
-            <li><a href="#" href="vista/buscar.php">Buscar profesional</a></li>
+            <li><a href="vista/buscar.php">Buscar profesional</a></li>
             <li><a href="#">Cómo funciona</a></li>
             <li><a href="#">Precios</a></li>
             <li><a href="#">Garantías</a></li>
@@ -2032,7 +2033,7 @@ $fotoUsuario   = $sesionActiva ? ($_SESSION['foto'] ?? '')                      
         <div class="footer-col">
           <h4>Para técnicos</h4>
           <ul>
-            <li><a href="#" href="vista/registro.php?rol=tecnico">Registrarse</a></li>
+            <li><a href="vista/registro.php?rol=tecnico">Registrarse</a></li>
             <li><a href="#">Beneficios</a></li>
             <li><a href="#">Certificaciones</a></li>
             <li><a href="#">Soporte</a></li>

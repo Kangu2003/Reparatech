@@ -1,0 +1,55 @@
+/* =====================================================================
+   ReparaTech — Mejoras DCU (rediseño "después")
+   Accesibilidad, legibilidad, ley de Fitts y retroalimentación.
+   ===================================================================== */
+:root { --dcu-focus: #1f7a54; --dcu-text-muted: #4f6560; }
+
+/* Retroalimentación: foco visible para teclado (WCAG 2.4.7) */
+a:focus-visible, button:focus-visible, input:focus-visible,
+select:focus-visible, textarea:focus-visible, [tabindex]:focus-visible {
+  outline: 3px solid var(--dcu-focus) !important; outline-offset: 2px; }
+
+/* Ley de Fitts: objetivos táctiles de al menos 44 px */
+button, .btn, .btn-primary, .btn-secondary, .btn-white, .btn-outline-white,
+.nav-cta, .search-btn-el, input[type="submit"] { min-height: 44px; }
+.btn-white, .btn-outline-white { display: inline-flex; align-items: center; justify-content: center; text-decoration: none; }
+
+/* Consistencia: los campos de contraseña usan el mismo estilo que los demás */
+input[type="password"] {
+  width: 100%; background: var(--off-white, #f6f8f6);
+  border: 1.5px solid rgba(72,191,132,.25); border-radius: 14px;
+  padding: .85rem 1.1rem; font: inherit; font-size: .92rem; color: var(--text, #1f2d2b);
+  transition: border-color .2s, box-shadow .2s; }
+input[type="password"]:focus { border-color: #48bf84; box-shadow: 0 0 0 4px rgba(72,191,132,.15); }
+
+/* Legibilidad: contraste mínimo AA en placeholders y textos secundarios */
+::placeholder { color: #6b7d78 !important; opacity: 1; }
+.input-hint, .hint, small { color: var(--dcu-text-muted); }
+
+/* Movimiento reducido */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+}
+
+/* ---------- Ajustes por pantalla ---------- */
+
+/* Inicio — jerarquía: título más compacto para que el buscador (acción principal) suba */
+.hero h1 { font-size: clamp(2.2rem, 3.4vw, 3.1rem); letter-spacing: -1px; line-height: 1.08; }
+
+/* Mis reservas — prevención de errores: acciones destructivas como botones
+   secundarios claros, separadas de las acciones positivas */
+.btn-cancelar, .btn-disputa {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 36px; padding: .45rem 1rem; border: 1.5px solid #dc2626 !important;
+  color: #b91c1c; background: #fff; }
+.btn-disputa { margin-top: .6rem !important; }
+.btn-cancelar:hover, .btn-disputa:hover { background: #fee2e2; }
+
+/* Panel — jerarquía: íconos de métricas en contenedor, distinguibles del texto */
+.stat-icon {
+  width: 44px; height: 44px; border-radius: 12px; display: flex !important;
+  align-items: center; justify-content: center; font-size: 1.35rem !important;
+  background: rgba(72,191,132,.14); margin-bottom: .7rem !important; }
+
+/* Buscar — jerarquía: el mapa es contexto; la lista de técnicos es lo principal */
+#map-servicios { height: 240px !important; }

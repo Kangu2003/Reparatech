@@ -122,6 +122,7 @@ $historial    = array_filter($reservas, fn($r) => in_array($r['estado'], ['compl
     .anim-1 { animation:fadeUp .5s .05s ease both; }
     .anim-2 { animation:fadeUp .5s .12s ease both; }
   </style>
+  <link rel="stylesheet" href="../css/dcu-mejoras.css">
 </head>
 <body>
 <div class="bg-dots"></div>

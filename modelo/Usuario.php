@@ -46,7 +46,7 @@ class Usuario {
 
         if ($encontrado && password_verify($pass, $db_hash)) {
             // Corrige la ruta de la foto dinámicamente según el entorno
-            if ($db_foto) {
+            if ($db_foto && !preg_match('#^https?://#i', $db_foto)) {
                 $db_foto = ltrim(str_replace('/inicio_sesion_mvc/', '', $db_foto), '/');
                 $db_foto = rtrim(BASE_URL, '/') . '/' . $db_foto;
             }

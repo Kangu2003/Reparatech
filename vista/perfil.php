@@ -423,6 +423,7 @@ $msg_err = isset($_GET['error']) ? htmlspecialchars($_GET['error']) : '';
     .anim-3 { animation: fadeUp .5s .16s ease both; }
     .anim-4 { animation: fadeUp .5s .22s ease both; }
   </style>
+  <link rel="stylesheet" href="../css/dcu-mejoras.css">
 </head>
 <body>
 
