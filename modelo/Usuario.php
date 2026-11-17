@@ -115,6 +115,20 @@ class Usuario {
         return $db_id ?? false;
     }
 
+    // ─── Obtener usuario por ID ────────────────────────────
+    public function obtenerPorId(int $id): array|false {
+        $stmt = $this->conexion->prepare(
+            "SELECT id, nombre_usuario, correo_electronico, rol, telefono, ciudad, foto
+             FROM usuarios WHERE id = ?"
+        );
+        if (!$stmt) return false;
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $fila = $stmt->get_result()->fetch_assoc();
+        $stmt->close();
+        return $fila ?: false;
+    }
+
     // ─── Métodos para Administrador ──────────────────────────
     public function obtenerTodos(string $rol = null): array {
         if ($rol) {
